@@ -22,6 +22,7 @@ export const FamilyMemberCard = ({
   className,
 }: FamilyMemberCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
   // Extract initials for avatar fallback
   const getInitials = (name: string) => {
@@ -43,22 +44,30 @@ export const FamilyMemberCard = ({
     });
   };
 
+  const handleTouchStart = () => {
+    setIsTouched(true);
+    // Auto reset after 1.5 seconds
+    setTimeout(() => setIsTouched(false), 1500);
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 300 }}
       className={cn("relative", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
     >
       <Card
         className={cn(
           "overflow-hidden transition-shadow duration-300",
-          compact ? "w-48" : "w-full max-w-xs",
+          compact ? "w-full max-w-36" : "w-full max-w-xs",
           member.gender === "male"
             ? "bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-blue-200/50"
             : "bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-purple-200/50",
-          isHovered ? "shadow-lg" : "shadow-md",
+          isHovered || isTouched ? "shadow-lg" : "shadow-md",
         )}
       >
         <div
@@ -67,13 +76,13 @@ export const FamilyMemberCard = ({
             member.gender === "male" ? "bg-blue-500" : "bg-purple-500",
           )}
         />
-        <CardContent className={cn("p-4", compact ? "pb-2" : "pb-4")}>
-          <div className="flex flex-col items-center gap-3">
+        <CardContent className={cn("p-3", compact ? "pb-1" : "pb-3")}>
+          <div className="flex flex-col items-center gap-2">
             <Avatar
               className={cn(
                 "ring-2",
                 member.gender === "male" ? "ring-blue-200" : "ring-purple-200",
-                compact ? "h-14 w-14" : "h-20 w-20",
+                compact ? "h-12 w-12" : "h-16 w-16",
               )}
             >
               <AvatarImage src={member.imageUrl} alt={member.name} />
@@ -91,8 +100,8 @@ export const FamilyMemberCard = ({
             <div className="text-center">
               <h3
                 className={cn(
-                  "font-bold",
-                  compact ? "text-base" : "text-lg",
+                  "font-bold line-clamp-1",
+                  compact ? "text-sm" : "text-base",
                   member.gender === "male"
                     ? "text-blue-900"
                     : "text-purple-900",
@@ -102,24 +111,26 @@ export const FamilyMemberCard = ({
               </h3>
 
               {!compact && member.bio && (
-                <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                <p className="mt-1 text-xs text-gray-600 line-clamp-2">
                   {member.bio}
                 </p>
               )}
 
               {!compact && (
-                <div className="mt-3 space-y-1.5">
+                <div className="mt-2 space-y-1">
                   {member.birthDate && (
                     <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
-                      <Calendar size={12} />
-                      <span>{formatBirthDate(member.birthDate)}</span>
+                      <Calendar size={10} />
+                      <span className="text-xs">
+                        {formatBirthDate(member.birthDate)}
+                      </span>
                     </div>
                   )}
 
                   {member.location && (
                     <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
-                      <MapPin size={12} />
-                      <span>{member.location}</span>
+                      <MapPin size={10} />
+                      <span className="text-xs">{member.location}</span>
                     </div>
                   )}
                 </div>
@@ -129,19 +140,19 @@ export const FamilyMemberCard = ({
         </CardContent>
 
         {!compact && (
-          <CardFooter className="flex justify-center gap-2 p-4 pt-0">
+          <CardFooter className="flex justify-center gap-1 p-3 pt-0">
             <Link to={`/member/${member.id}`}>
               <Button
                 size="sm"
                 variant="outline"
                 className={cn(
-                  "gap-1",
+                  "h-8 gap-1 px-2 py-1 text-xs",
                   member.gender === "male"
                     ? "hover:bg-blue-50"
                     : "hover:bg-purple-50",
                 )}
               >
-                <Info size={14} />
+                <Info size={12} />
                 <span>التفاصيل</span>
               </Button>
             </Link>
@@ -150,13 +161,13 @@ export const FamilyMemberCard = ({
                 size="sm"
                 variant="outline"
                 className={cn(
-                  "gap-1",
+                  "h-8 gap-1 px-2 py-1 text-xs",
                   member.gender === "male"
                     ? "hover:bg-blue-50"
                     : "hover:bg-purple-50",
                 )}
               >
-                <Edit size={14} />
+                <Edit size={12} />
                 <span>تعديل</span>
               </Button>
             </Link>
@@ -164,34 +175,34 @@ export const FamilyMemberCard = ({
         )}
 
         {compact && (
-          <CardFooter className="flex justify-center p-2">
+          <CardFooter className="flex justify-center p-1">
             <Link to={`/member/${member.id}`}>
               <Button
                 size="sm"
                 variant="ghost"
-                className="h-8 w-8 p-0"
+                className="h-7 w-7 p-0"
                 aria-label="عرض التفاصيل"
               >
-                <Info size={14} />
+                <Info size={12} />
               </Button>
             </Link>
           </CardFooter>
         )}
 
-        {onDelete && isHovered && (
+        {onDelete && (isHovered || isTouched) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute -right-2 -top-2"
+            className="absolute -right-1 -top-1"
           >
             <Button
               size="sm"
               variant="destructive"
-              className="h-7 w-7 rounded-full p-0"
+              className="h-6 w-6 rounded-full p-0"
               onClick={() => onDelete(member.id)}
               aria-label="حذف"
             >
-              <Trash2 size={14} />
+              <Trash2 size={12} />
             </Button>
           </motion.div>
         )}

@@ -50,30 +50,33 @@ const FamilyTree = () => {
       <Header />
 
       <main className="flex flex-1 flex-col bg-gradient-to-br from-slate-50 to-gray-100">
-        {/* Controls */}
-        <div className="border-b bg-white p-4 shadow-sm">
+        {/* Controls - More compact for mobile */}
+        <div className="border-b bg-white p-2 shadow-sm sm:p-3">
           <div className="container mx-auto">
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="ابحث عن فرد من العائلة..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9"
+                  className="h-9 pl-8 text-sm"
                 />
                 {searchQuery && filteredMembers.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute right-0 top-full z-10 mt-1 w-full rounded-md border bg-white p-2 shadow-lg"
+                    className="absolute right-0 top-full z-20 mt-1 w-full rounded-md border bg-white p-2 shadow-lg"
                   >
-                    <div className="max-h-60 overflow-auto">
+                    <div className="max-h-48 overflow-auto">
                       {filteredMembers.map((member) => (
                         <div
                           key={member.id}
-                          className="cursor-pointer rounded-md px-3 py-2 hover:bg-gray-100"
-                          onClick={() => navigate(`/member/${member.id}`)}
+                          className="cursor-pointer rounded-md px-3 py-2.5 hover:bg-gray-100"
+                          onClick={() => {
+                            navigate(`/member/${member.id}`);
+                            setSearchQuery(""); // Clear search after selection
+                          }}
                         >
                           <div className="font-medium">{member.name}</div>
                           {member.birthDate && (
@@ -91,27 +94,38 @@ const FamilyTree = () => {
                 )}
               </div>
 
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setShowFilters(!showFilters)}
-                className={showFilters ? "bg-gray-100" : ""}
-              >
-                <Filter className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center justify-between gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={cn(
+                    "h-9 w-9 p-0",
+                    showFilters ? "bg-gray-100" : "",
+                  )}
+                >
+                  <Filter className="h-4 w-4" />
+                </Button>
 
-              <Button
-                variant="outline"
-                onClick={() => setRootMember(familyData.members[0]?.id || "")}
-              >
-                <RefreshCw className="mr-2 h-4 w-4" />
-                إعادة تعيين
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setRootMember(familyData.members[0]?.id || "")}
+                  className="h-9 px-2 text-xs"
+                >
+                  <RefreshCw className="mr-1 h-4 w-4" />
+                  إعادة تعيين
+                </Button>
 
-              <Button onClick={() => navigate("/add-member")}>
-                <UserPlus className="mr-2 h-4 w-4" />
-                إضافة فرد
-              </Button>
+                <Button
+                  size="sm"
+                  onClick={() => navigate("/add-member")}
+                  className="h-9 px-2 text-xs"
+                >
+                  <UserPlus className="mr-1 h-4 w-4" />
+                  إضافة فرد
+                </Button>
+              </div>
             </div>
 
             {/* Filters */}
@@ -120,28 +134,26 @@ const FamilyTree = () => {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="mt-4 overflow-hidden"
+                className="mt-2 overflow-hidden sm:mt-3"
               >
-                <div className="border-t pt-4">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm font-medium">جذر الشجرة:</label>
-                      <Select
-                        value={selectedRoot}
-                        onValueChange={handleChangeRoot}
-                      >
-                        <SelectTrigger className="w-[200px]">
-                          <SelectValue placeholder="اختر فرد كجذر للشجرة" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {familyData.members.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {member.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                <div className="border-t pt-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <label className="text-sm font-medium">جذر الشجرة:</label>
+                    <Select
+                      value={selectedRoot}
+                      onValueChange={handleChangeRoot}
+                    >
+                      <SelectTrigger className="h-9 flex-1 text-sm sm:w-[200px]">
+                        <SelectValue placeholder="اختر فرد كجذر للشجرة" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {familyData.members.map((member) => (
+                          <SelectItem key={member.id} value={member.id}>
+                            {member.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </motion.div>
@@ -149,9 +161,9 @@ const FamilyTree = () => {
           </div>
         </div>
 
-        {/* Tree Visualization */}
-        <div className="container mx-auto flex-1 p-4">
-          <div className="h-[calc(100vh-240px)] overflow-hidden rounded-xl border shadow-sm">
+        {/* Tree Visualization - Full height on mobile */}
+        <div className="flex-1 p-0 sm:container sm:mx-auto sm:p-2">
+          <div className="h-[calc(100vh-125px)] overflow-hidden rounded-none border shadow-sm sm:h-[calc(100vh-150px)] sm:rounded-xl">
             <TreeVisualization
               treeData={treeData}
               onSelectMember={handleSelectMember}
@@ -164,5 +176,8 @@ const FamilyTree = () => {
     </div>
   );
 };
+
+// Import missing cn function
+import { cn } from "@/lib/utils";
 
 export default FamilyTree;

@@ -12,7 +12,7 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 py-20 text-white">
+        <section className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 py-12 text-white sm:py-20">
           <div className="absolute inset-0 z-0 opacity-30">
             <svg
               width="100%"
@@ -42,7 +42,7 @@ const Index = () => {
           <div className="container relative z-10 mx-auto px-4">
             <div className="flex flex-col items-center justify-center text-center">
               <motion.h1
-                className="mb-6 text-4xl font-bold leading-tight md:text-6xl"
+                className="mb-4 text-3xl font-bold leading-tight sm:mb-6 sm:text-4xl md:text-6xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
@@ -51,7 +51,7 @@ const Index = () => {
               </motion.h1>
 
               <motion.p
-                className="mb-8 max-w-2xl text-xl"
+                className="mb-6 max-w-2xl text-base sm:mb-8 sm:text-xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -60,26 +60,26 @@ const Index = () => {
               </motion.p>
 
               <motion.div
-                className="flex flex-col gap-4 sm:flex-row"
+                className="flex flex-col gap-3 sm:flex-row sm:gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Link to="/family-tree">
+                <Link to="/family-tree" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="bg-white text-indigo-600 hover:bg-indigo-100"
+                    className="w-full bg-white text-indigo-600 hover:bg-indigo-100 sm:w-auto"
                   >
                     <Users className="mr-2 h-5 w-5" />
                     استعرض شجرة العائلة
                   </Button>
                 </Link>
 
-                <Link to="/add-member">
+                <Link to="/add-member" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-white text-white hover:bg-white/20"
+                    className="w-full border-white text-white hover:bg-white/20 sm:w-auto"
                   >
                     <UserPlus className="mr-2 h-5 w-5" />
                     أضف فرد جديد للعائلة
@@ -102,16 +102,16 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20">
+        <section className="py-10 sm:py-16">
           <div className="container mx-auto px-4">
-            <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 md:text-4xl">
+            <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 sm:mb-12 md:text-3xl">
               ميزات رائعة للحفاظ على تراث عائلتك
             </h2>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
               {/* Feature 1 */}
               <motion.div
-                className="rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow-md"
+                className="rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 p-5 shadow-md sm:p-6"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
@@ -121,9 +121,9 @@ const Index = () => {
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 sm:mb-4 sm:h-14 sm:w-14">
                   <svg
-                    className="h-7 w-7"
+                    className="h-6 w-6 sm:h-7 sm:w-7"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -136,8 +136,10 @@ const Index = () => {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="mb-3 text-xl font-semibold">حفظ المعلومات</h3>
-                <p className="text-gray-600">
+                <h3 className="mb-2 text-lg font-semibold sm:mb-3 sm:text-xl">
+                  حفظ المعلومات
+                </h3>
+                <p className="text-sm text-gray-600 sm:text-base">
                   سجل المعلومات الكاملة لكل فرد من أفراد العائلة، بما في ذلك
                   الصور والتواريخ والقصص.
                 </p>
@@ -145,7 +147,7 @@ const Index = () => {
 
               {/* Feature 2 */}
               <motion.div
-                className="rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-6 shadow-md"
+                className="rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-5 shadow-md sm:p-6"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
@@ -155,9 +157,9 @@ const Index = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600 sm:mb-4 sm:h-14 sm:w-14">
                   <svg
-                    className="h-7 w-7"
+                    className="h-6 w-6 sm:h-7 sm:w-7"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -170,8 +172,10 @@ const Index = () => {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="mb-3 text-xl font-semibold">العرض التفاعلي</h3>
-                <p className="text-gray-600">
+                <h3 className="mb-2 text-lg font-semibold sm:mb-3 sm:text-xl">
+                  العرض التفاعلي
+                </h3>
+                <p className="text-sm text-gray-600 sm:text-base">
                   استعرض شجرة العائلة بطريقة تفاعلية جذابة، مع إمكانية التكبير
                   والتصغير والتنقل بسهولة.
                 </p>
@@ -179,7 +183,7 @@ const Index = () => {
 
               {/* Feature 3 */}
               <motion.div
-                className="rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 p-6 shadow-md"
+                className="rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 p-5 shadow-md sm:p-6"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
@@ -189,11 +193,13 @@ const Index = () => {
                 transition={{ duration: 0.5, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                  <Search className="h-7 w-7" />
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 sm:mb-4 sm:h-14 sm:w-14">
+                  <Search className="h-6 w-6 sm:h-7 sm:w-7" />
                 </div>
-                <h3 className="mb-3 text-xl font-semibold">البحث السريع</h3>
-                <p className="text-gray-600">
+                <h3 className="mb-2 text-lg font-semibold sm:mb-3 sm:text-xl">
+                  البحث السريع
+                </h3>
+                <p className="text-sm text-gray-600 sm:text-base">
                   ابحث عن أي فرد من أفراد العائلة بسرعة وسهولة واعرض المعلومات
                   الخاصة به.
                 </p>
@@ -203,17 +209,20 @@ const Index = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-indigo-100 to-purple-100 py-16">
+        <section className="bg-gradient-to-r from-indigo-100 to-purple-100 py-10 sm:py-16">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="mb-6 text-3xl font-bold text-gray-800">
+            <h2 className="mb-4 text-2xl font-bold text-gray-800 sm:mb-6 sm:text-3xl">
               ابدأ الآن بحفظ تاريخ عائلتك
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-gray-600">
+            <p className="mx-auto mb-6 max-w-2xl text-sm text-gray-600 sm:mb-8 sm:text-base">
               لا تدع ذكريات العائلة وتاريخها يضيع مع مرور الزمن. سجل المعلومات
               الآن وشاركها مع الأجيال القادمة.
             </p>
             <Link to="/family-tree">
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700">
+              <Button
+                size="lg"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 sm:w-auto"
+              >
                 استكشف شجرة العائلة
               </Button>
             </Link>

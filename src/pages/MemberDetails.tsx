@@ -148,18 +148,19 @@ const MemberDetails = () => {
       <main className="flex-1 bg-gradient-to-br from-slate-50 to-gray-100 pb-12 pt-8">
         <div className="container mx-auto px-4">
           {/* Back Navigation */}
-          <div className="mb-6">
+          <div className="mb-3 px-3 sm:mb-6 sm:px-0">
             <Button
               variant="ghost"
+              size="sm"
               onClick={() => navigate(-1)}
               className="group"
             >
-              <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+              <ArrowLeft className="mr-1.5 h-4 w-4 transition-transform group-hover:-translate-x-1" />
               العودة
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 px-3 sm:gap-6 sm:px-0 lg:grid-cols-3">
             {/* Main Member Information */}
             <div className="lg:col-span-1">
               <motion.div
@@ -168,7 +169,7 @@ const MemberDetails = () => {
               >
                 <Card
                   className={cn(
-                    "overflow-hidden shadow-lg",
+                    "overflow-hidden shadow-md sm:shadow-lg",
                     member.gender === "male"
                       ? "bg-gradient-to-br from-blue-50 to-indigo-50"
                       : "bg-gradient-to-br from-purple-50 to-pink-50",
@@ -176,17 +177,17 @@ const MemberDetails = () => {
                 >
                   <div
                     className={cn(
-                      "h-2",
+                      "h-1.5 sm:h-2",
                       member.gender === "male"
                         ? "bg-blue-500"
                         : "bg-purple-500",
                     )}
                   />
-                  <CardHeader className="pt-6 text-center">
+                  <CardHeader className="pt-4 text-center sm:pt-6">
                     <div className="mx-auto">
                       <Avatar
                         className={cn(
-                          "h-24 w-24 ring-4",
+                          "h-20 w-20 ring-4 sm:h-24 sm:w-24",
                           member.gender === "male"
                             ? "ring-blue-200"
                             : "ring-purple-200",
@@ -195,7 +196,7 @@ const MemberDetails = () => {
                         <AvatarImage src={member.imageUrl} alt={member.name} />
                         <AvatarFallback
                           className={cn(
-                            "text-xl",
+                            "text-lg sm:text-xl",
                             member.gender === "male"
                               ? "bg-blue-100 text-blue-600"
                               : "bg-purple-100 text-purple-600",
@@ -205,7 +206,7 @@ const MemberDetails = () => {
                         </AvatarFallback>
                       </Avatar>
                     </div>
-                    <CardTitle className="mt-4 text-2xl font-bold">
+                    <CardTitle className="mt-3 text-xl font-bold sm:mt-4 sm:text-2xl">
                       {member.name}
                     </CardTitle>
                     <div className="mt-1 flex justify-center">
@@ -222,11 +223,11 @@ const MemberDetails = () => {
                     </div>
                   </CardHeader>
 
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Calendar size={16} />
+                  <CardContent className="px-4 py-3 sm:p-6">
+                    <div className="space-y-3 sm:space-y-4">
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                          <Calendar size={14} className="sm:h-4 sm:w-4" />
                           <span>تاريخ الميلاد:</span>
                           <span className="font-medium">
                             {formatDate(member.birthDate)}
@@ -234,8 +235,8 @@ const MemberDetails = () => {
                         </div>
 
                         {member.deathDate && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <Calendar size={16} />
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                            <Calendar size={14} className="sm:h-4 sm:w-4" />
                             <span>تاريخ الوفاة:</span>
                             <span className="font-medium">
                               {formatDate(member.deathDate)}
@@ -244,8 +245,8 @@ const MemberDetails = () => {
                         )}
 
                         {member.location && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <MapPin size={16} />
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                            <MapPin size={14} className="sm:h-4 sm:w-4" />
                             <span>المدينة:</span>
                             <span className="font-medium">
                               {member.location}
@@ -256,8 +257,8 @@ const MemberDetails = () => {
 
                       {member.bio && (
                         <div>
-                          <h3 className="mb-2 flex items-center gap-1 font-medium">
-                            <BadgeInfo size={16} />
+                          <h3 className="mb-1.5 flex items-center gap-1 font-medium sm:mb-2">
+                            <BadgeInfo size={14} className="sm:h-4 sm:w-4" />
                             <span>نبذة</span>
                           </h3>
                           <p className="text-sm text-gray-600">{member.bio}</p>
@@ -266,10 +267,14 @@ const MemberDetails = () => {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="flex justify-between">
+                  <CardFooter className="flex justify-between px-4 py-3 sm:p-6">
                     <Link to={`/edit-member/${member.id}`}>
-                      <Button variant="outline" className="gap-1">
-                        <Edit size={16} />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-1 text-xs sm:text-sm"
+                      >
+                        <Edit size={14} className="sm:h-4 sm:w-4" />
                         <span>تعديل</span>
                       </Button>
                     </Link>
@@ -279,12 +284,16 @@ const MemberDetails = () => {
                       onOpenChange={setDeleteDialogOpen}
                     >
                       <DialogTrigger asChild>
-                        <Button variant="destructive" className="gap-1">
-                          <Trash2 size={16} />
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="gap-1 text-xs sm:text-sm"
+                        >
+                          <Trash2 size={14} className="sm:h-4 sm:w-4" />
                           <span>حذف</span>
                         </Button>
                       </DialogTrigger>
-                      <DialogContent>
+                      <DialogContent className="max-w-[90vw] sm:max-w-lg">
                         <DialogHeader>
                           <DialogTitle>تأكيد الحذف</DialogTitle>
                           <DialogDescription>
@@ -296,12 +305,14 @@ const MemberDetails = () => {
                         </DialogHeader>
                         <DialogFooter>
                           <Button
+                            size="sm"
                             variant="ghost"
                             onClick={() => setDeleteDialogOpen(false)}
                           >
                             إلغاء
                           </Button>
                           <Button
+                            size="sm"
                             variant="destructive"
                             onClick={handleDeleteMember}
                           >
@@ -317,7 +328,7 @@ const MemberDetails = () => {
 
             {/* Family Relationships */}
             <div className="lg:col-span-2">
-              <div className="grid grid-cols-1 gap-8">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6">
                 {/* Parents */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}

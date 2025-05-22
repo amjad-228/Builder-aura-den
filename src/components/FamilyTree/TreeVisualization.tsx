@@ -19,7 +19,7 @@ export const TreeVisualization = ({
   className,
 }: TreeVisualizationProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(0.8); // Start with smaller scale on mobile
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
@@ -27,11 +27,15 @@ export const TreeVisualization = ({
     Map<string, { x: number; y: number }>
   >(new Map());
 
-  // Node spacing constants
-  const HORIZONTAL_SPACING = 200;
-  const VERTICAL_SPACING = 150;
-  const NODE_WIDTH = 120;
-  const NODE_HEIGHT = 150;
+  // Detect if we're on a mobile device
+  const isMobile =
+    typeof window !== "undefined" ? window.innerWidth < 768 : false;
+
+  // Node spacing constants - smaller for mobile
+  const HORIZONTAL_SPACING = isMobile ? 150 : 200;
+  const VERTICAL_SPACING = isMobile ? 120 : 150;
+  const NODE_WIDTH = isMobile ? 90 : 120;
+  const NODE_HEIGHT = isMobile ? 120 : 150;
 
   // Calculate positions of nodes in the tree
   useEffect(() => {
@@ -70,27 +74,43 @@ export const TreeVisualization = ({
     if (containerRef.current) {
       setPosition({
         x: containerRef.current.clientWidth / 2,
-        y: 100,
+        y: 80, // Start closer to top on mobile
       });
     }
-  }, [treeData]);
+  }, [treeData, HORIZONTAL_SPACING, VERTICAL_SPACING]);
 
-  // Handle mouse events for dragging
-  const handleMouseDown = (e: React.MouseEvent) => {
+  // Handle touch/mouse events for dragging
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
+
+    // Get coordinates based on event type
+    const clientX =
+      "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clientY =
+      "touches" in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
+
     setStartPoint({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
+      x: clientX - position.x,
+      y: clientY - position.y,
     });
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - startPoint.x,
-        y: e.clientY - startPoint.y,
-      });
-    }
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+
+    // Prevent default to stop scrolling on touch devices
+    e.preventDefault();
+
+    // Get coordinates based on event type
+    const clientX =
+      "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clientY =
+      "touches" in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
+
+    setPosition({
+      x: clientX - startPoint.x,
+      y: clientY - startPoint.y,
+    });
   };
 
   const handleMouseUp = () => {
@@ -100,10 +120,10 @@ export const TreeVisualization = ({
   // Reset view
   const resetView = () => {
     if (containerRef.current) {
-      setScale(1);
+      setScale(isMobile ? 0.8 : 1);
       setPosition({
         x: containerRef.current.clientWidth / 2,
-        y: 100,
+        y: isMobile ? 80 : 100,
       });
     }
   };
@@ -114,7 +134,7 @@ export const TreeVisualization = ({
   };
 
   const handleZoomOut = () => {
-    setScale((prev) => Math.max(prev - 0.1, 0.5));
+    setScale((prev) => Math.max(prev - 0.1, 0.4));
   };
 
   // Recursive function to render nodes
@@ -125,7 +145,7 @@ export const TreeVisualization = ({
     return (
       <motion.div
         key={node.member.id}
-        className="absolute"
+        className="absolute touch-none"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
@@ -223,7 +243,7 @@ export const TreeVisualization = ({
 
   if (!treeData) {
     return (
-      <div className="p-8 text-center text-gray-500">
+      <div className="p-6 text-center text-gray-500">
         لا توجد بيانات متاحة للشجرة العائلية
       </div>
     );
@@ -236,32 +256,37 @@ export const TreeVisualization = ({
         className,
       )}
     >
-      {/* Zoom controls */}
-      <div className="absolute right-4 top-4 z-10 flex flex-col gap-2">
+      {/* Zoom controls - bigger and more finger-friendly for mobile */}
+      <div className="absolute bottom-4 right-4 z-10 flex flex-row gap-2 md:top-4 md:flex-col">
         <Button
           variant="outline"
           size="icon"
           onClick={handleZoomIn}
-          className="bg-white/80 backdrop-blur-sm"
+          className="h-12 w-12 rounded-full bg-white/90 backdrop-blur-sm md:h-10 md:w-10 md:rounded-md"
         >
-          <ZoomIn className="h-4 w-4" />
+          <ZoomIn className="h-6 w-6 md:h-4 md:w-4" />
         </Button>
         <Button
           variant="outline"
           size="icon"
           onClick={handleZoomOut}
-          className="bg-white/80 backdrop-blur-sm"
+          className="h-12 w-12 rounded-full bg-white/90 backdrop-blur-sm md:h-10 md:w-10 md:rounded-md"
         >
-          <ZoomOut className="h-4 w-4" />
+          <ZoomOut className="h-6 w-6 md:h-4 md:w-4" />
         </Button>
         <Button
           variant="outline"
           size="icon"
           onClick={resetView}
-          className="bg-white/80 backdrop-blur-sm"
+          className="h-12 w-12 rounded-full bg-white/90 backdrop-blur-sm md:h-10 md:w-10 md:rounded-md"
         >
-          <Home className="h-4 w-4" />
+          <Home className="h-6 w-6 md:h-4 md:w-4" />
         </Button>
+      </div>
+
+      {/* Info message for mobile users */}
+      <div className="absolute left-0 top-0 z-10 w-full bg-indigo-50 p-2 text-center text-xs text-indigo-800 md:hidden">
+        اسحب لتحريك الشجرة واضغط على الأزرار للتكبير/التصغير
       </div>
 
       {/* Background pattern */}
@@ -279,17 +304,20 @@ export const TreeVisualization = ({
         </svg>
       </div>
 
-      {/* Tree container */}
+      {/* Tree container with touch events */}
       <div
         ref={containerRef}
         className={cn(
-          "h-full w-full cursor-move",
+          "h-full w-full touch-pan-y",
           isDragging ? "cursor-grabbing" : "cursor-grab",
         )}
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
+        onMouseMove={handleMouseMove as React.MouseEventHandler}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove as React.TouchEventHandler}
+        onTouchEnd={handleMouseUp}
       >
         <div
           className="relative h-full w-full transform"

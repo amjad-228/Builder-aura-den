@@ -146,39 +146,44 @@ const AddFamilyMember = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-3xl px-3 sm:px-0">
               <Card className="shadow-md">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
-                  <CardTitle className="text-xl text-center">
+                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 sm:p-6">
+                  <CardTitle className="text-center text-lg sm:text-xl">
                     إضافة فرد جديد للعائلة
                   </CardTitle>
-                  <CardDescription className="text-center">
+                  <CardDescription className="text-center text-xs sm:text-sm">
                     أدخل المعلومات الخاصة بالفرد الجديد
                   </CardDescription>
                 </CardHeader>
 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <CardContent className="space-y-6 p-6">
-                      <div className="space-y-4">
+                    <CardContent className="space-y-4 p-4 sm:space-y-6 sm:p-6">
+                      <div className="space-y-3 sm:space-y-4">
                         {/* Basic Information */}
-                        <div className="rounded-md bg-slate-50 p-4">
-                          <h3 className="mb-4 font-medium">معلومات أساسية</h3>
+                        <div className="rounded-md bg-slate-50 p-3 sm:p-4">
+                          <h3 className="mb-3 text-sm font-medium sm:mb-4 sm:text-base">
+                            معلومات أساسية
+                          </h3>
 
-                          <div className="grid gap-4 md:grid-cols-2">
+                          <div className="grid gap-3 sm:gap-4 md:grid-cols-2">
                             <FormField
                               control={form.control}
                               name="name"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>الاسم الكامل*</FormLabel>
+                                  <FormLabel className="text-xs sm:text-sm">
+                                    الاسم الكامل*
+                                  </FormLabel>
                                   <FormControl>
                                     <Input
                                       placeholder="أدخل الاسم الكامل"
+                                      className="h-9 text-sm"
                                       {...field}
                                     />
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-[10px] sm:text-xs" />
                                 </FormItem>
                               )}
                             />
@@ -187,8 +192,10 @@ const AddFamilyMember = () => {
                               control={form.control}
                               name="gender"
                               render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                  <FormLabel>النوع*</FormLabel>
+                                <FormItem className="space-y-1.5 sm:space-y-3">
+                                  <FormLabel className="text-xs sm:text-sm">
+                                    النوع*
+                                  </FormLabel>
                                   <FormControl>
                                     <RadioGroup
                                       onValueChange={field.onChange}
@@ -199,8 +206,12 @@ const AddFamilyMember = () => {
                                         <RadioGroupItem
                                           value="male"
                                           id="male"
+                                          className="h-4 w-4"
                                         />
-                                        <label htmlFor="male" className="mr-2">
+                                        <label
+                                          htmlFor="male"
+                                          className="mr-2 text-xs sm:text-sm"
+                                        >
                                           ذكر
                                         </label>
                                       </div>
@@ -208,17 +219,18 @@ const AddFamilyMember = () => {
                                         <RadioGroupItem
                                           value="female"
                                           id="female"
+                                          className="h-4 w-4"
                                         />
                                         <label
                                           htmlFor="female"
-                                          className="mr-2"
+                                          className="mr-2 text-xs sm:text-sm"
                                         >
                                           أنثى
                                         </label>
                                       </div>
                                     </RadioGroup>
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-[10px] sm:text-xs" />
                                 </FormItem>
                               )}
                             />
@@ -255,7 +267,7 @@ const AddFamilyMember = () => {
                                     <Input type="date" {...field} />
                                   </FormControl>
                                   <FormDescription>
-                                    اختياري، اترك فارغاً إذا ��لى قيد الحياة
+                                    اختياري، اترك فارغاً إذا على قيد الحياة
                                   </FormDescription>
                                   <FormMessage />
                                 </FormItem>
