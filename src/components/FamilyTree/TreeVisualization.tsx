@@ -147,6 +147,8 @@ export const TreeVisualization = ({
     if (!treeData) return null;
 
     const connections: JSX.Element[] = [];
+    // We'll use a counter to ensure unique keys
+    let connectionCounter = 0;
 
     // Function to draw connections
     const drawConnections = (node: FamilyTreeNode) => {
@@ -163,10 +165,13 @@ export const TreeVisualization = ({
           const toX = childPos.x + position.x;
           const toY = childPos.y + position.y;
 
+          // Create a unique ID for this parent-child connection
+          const connectionId = `connection-${connectionCounter++}`;
+
           // Add vertical line from parent
           connections.push(
             <VerticalConnector
-              key={`vert-${node.member.id}-${child.member.id}`}
+              key={`vert-from-${connectionId}`}
               x={fromX}
               fromY={fromY}
               toY={fromY + 30}
@@ -185,7 +190,7 @@ export const TreeVisualization = ({
               const horizontalY = fromY + 30;
               connections.push(
                 <HorizontalConnector
-                  key={`horiz-${node.member.id}-${firstChild.x}-${lastChild.x}`}
+                  key={`horiz-${connectionId}`}
                   fromX={firstChild.x + position.x}
                   toX={lastChild.x + position.x}
                   y={horizontalY}
@@ -198,7 +203,7 @@ export const TreeVisualization = ({
           // Add vertical line to child
           connections.push(
             <VerticalConnector
-              key={`vert-to-${child.member.id}`}
+              key={`vert-to-${connectionId}`}
               x={childPos.x + position.x}
               fromY={fromY + 30}
               toY={toY}
