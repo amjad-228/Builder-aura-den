@@ -185,7 +185,7 @@ export const TreeVisualization = ({
               const horizontalY = fromY + 30;
               connections.push(
                 <HorizontalConnector
-                  key={`horiz-${node.member.id}`}
+                  key={`horiz-${node.member.id}-${firstChild.x}-${lastChild.x}`}
                   fromX={firstChild.x + position.x}
                   toX={lastChild.x + position.x}
                   y={horizontalY}
